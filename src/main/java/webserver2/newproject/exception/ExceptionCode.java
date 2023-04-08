@@ -5,7 +5,9 @@ import lombok.Getter;
 public enum ExceptionCode {
 
 
-    BOARD_NOT_FOUND(400, "board not found");
+    BOARD_NOT_FOUND(400, "board not found"),
+    REPLY_NOT_FOUND(400, "reply not found");
+
 
     @Getter
     private int status;

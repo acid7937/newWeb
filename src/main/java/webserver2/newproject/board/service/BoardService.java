@@ -13,13 +13,17 @@ import webserver2.newproject.board.repository.BoardRepository;
 import webserver2.newproject.exception.BusinessLogicException;
 import webserver2.newproject.exception.ExceptionCode;
 
+import javax.transaction.Transactional;
+
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BoardService {
     private final BoardRepository boardRepository;
 
 
-    //아이디 찾고 없으면 Exception
+
+     //아이디 찾고 없으면 Exception
     public Board findBoardId(Long boardId) {
         return boardRepository.findById(boardId)
                 .orElseThrow(()->new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
