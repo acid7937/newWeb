@@ -6,6 +6,7 @@ public enum ExceptionCode {
 
 
     BOARD_NOT_FOUND(400, "board not found"),
+    MEMBER_NOT_FOUND(400, "member not found"),
     REPLY_NOT_FOUND(400, "reply not found");
 
 

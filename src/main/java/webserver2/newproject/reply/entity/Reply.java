@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import webserver2.newproject.board.entity.Board;
+import webserver2.newproject.member.entity.Member;
 
 import javax.persistence.*;
 
@@ -22,4 +23,8 @@ public class Reply {
     @ManyToOne
     @JoinColumn(name = "board_id")
     private Board board;
+
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 }

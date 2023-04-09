@@ -1,6 +1,8 @@
 package webserver2.newproject.reply.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import webserver2.newproject.board.entity.Board;
 import webserver2.newproject.board.service.BoardService;
@@ -8,6 +10,7 @@ import webserver2.newproject.exception.BusinessLogicException;
 import webserver2.newproject.exception.ExceptionCode;
 import webserver2.newproject.reply.dto.ReplyPatchDto;
 import webserver2.newproject.reply.dto.ReplyPostDto;
+import webserver2.newproject.reply.dto.ReplyResponseDto;
 import webserver2.newproject.reply.entity.Reply;
 import webserver2.newproject.reply.repository.ReplyRepository;
 
@@ -38,6 +41,12 @@ public class ReplyService {
         reply.setReContent(replyPatchDto.getReContent());
 
         return replyRepository.save(reply).getReplyId();
+    }
+
+    public Page<ReplyResponseDto> findAllReply(Pageable pageable,Long boardId) {
+        Board board = boardService.findBoardId(boardId);
+        Page<Reply> replies = replyRepository.findByBoard(board, pageable);
+        return replies.map(ReplyResponseDto::FindFromReply);
     }
 
     public void deleteReply(Long replyId) {

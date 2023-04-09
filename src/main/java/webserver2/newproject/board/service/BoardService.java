@@ -17,7 +17,7 @@ import javax.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+
 public class BoardService {
     private final BoardRepository boardRepository;
 
