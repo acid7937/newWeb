@@ -23,6 +23,8 @@ public class Board {
 
     private String content;
 
+    private Integer boardCount =0;
+
     @OneToMany(mappedBy = "board", cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     private List<Reply> reply = new ArrayList<>();
 

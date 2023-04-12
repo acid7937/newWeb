@@ -1,6 +1,5 @@
 package webserver2.newproject.board.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,13 +13,16 @@ public class BoardResponseDto {
     private String title;
     private String content;
 
+    private Integer boardCount;
+
     //정적 팩토리 메서드 추가
     public static BoardResponseDto FindFromBoard(Board board) {
 
         return new BoardResponseDto(
                 board.getBoardId(),
                 board.getTitle(),
-                board.getContent()
+                board.getContent(),
+                board.getBoardCount()
 
         );
     }

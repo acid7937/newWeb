@@ -1,6 +1,5 @@
 package webserver2.newproject.board.service;
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +12,6 @@ import webserver2.newproject.board.repository.BoardRepository;
 import webserver2.newproject.exception.BusinessLogicException;
 import webserver2.newproject.exception.ExceptionCode;
 
-import javax.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -49,6 +47,8 @@ public class BoardService {
     public BoardResponseDto findByBoardId(Long boardId) {
 
         Board board = findBoardId(boardId);
+        board.setBoardCount(board.getBoardCount() + 1);
+        boardRepository.save(board); // 게시글의 조회수를 증가시킨 후 저장하는 용도
         return BoardResponseDto.FindFromBoard(board);
     }
 

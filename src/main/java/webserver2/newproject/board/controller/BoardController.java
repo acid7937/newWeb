@@ -8,12 +8,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import webserver2.newproject.board.dto.BoardPatchDto;
 import webserver2.newproject.board.dto.BoardPostDto;
 import webserver2.newproject.board.dto.BoardResponseDto;
 import webserver2.newproject.board.service.BoardService;
+import webserver2.newproject.member.entity.Member;
 
 @Getter @Setter
 @RestController
@@ -23,8 +25,11 @@ public class BoardController {
 
     private final BoardService boardService;
 
+
     @PostMapping
-    public ResponseEntity postBoard(@RequestBody @Validated BoardPostDto boardPostDto) {
+    public ResponseEntity postBoard(@RequestBody @Validated BoardPostDto boardPostDto, Authentication authentication) {
+        Member member = (Member) authentication.getPrincipal();
+        Long memberId = member.getMemberId();
         Long boardId = boardService.createBoard(boardPostDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(boardId);
     }
