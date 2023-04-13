@@ -9,7 +9,9 @@ public enum ExceptionCode {
     MEMBER_NOT_FOUND(400, "member not found"),
     PASSWORD_NOT_FOUND(400, "password not found"),
     LOGIN_NOT_FOUND(400, "login not found"),
+    NO_PERMISSION(400, "no permission"),
     REPLY_NOT_FOUND(400, "reply not found");
+
 
 
 

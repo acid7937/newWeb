@@ -11,6 +11,9 @@ import webserver2.newproject.board.entity.Board;
 import webserver2.newproject.board.repository.BoardRepository;
 import webserver2.newproject.exception.BusinessLogicException;
 import webserver2.newproject.exception.ExceptionCode;
+import webserver2.newproject.member.entity.Member;
+import webserver2.newproject.member.repository.MemberRepository;
+import webserver2.newproject.member.service.MemberService;
 
 
 @Service
@@ -18,6 +21,7 @@ import webserver2.newproject.exception.ExceptionCode;
 
 public class BoardService {
     private final BoardRepository boardRepository;
+    private final MemberService memberService;
 
 
 
@@ -27,18 +31,30 @@ public class BoardService {
                 .orElseThrow(()->new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
     }
 
+    public void isPermission(Member member, String email) {
+        if (!member.getEmail().equals(email)) {
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
+        }
+    }
+
+
     public Long createBoard(BoardPostDto boardPostDto) {
         Board board = new Board();
+
         board.setTitle(boardPostDto.getTitle());
         board.setContent(boardPostDto.getContent());
+        board.setMember(memberService.displayNickname(boardPostDto.getMember()));
 
         return boardRepository.save(board).getBoardId();
     }
 
-    public Long updateBoard(BoardPatchDto boardPatchDto, Long boardId) {
+    public Long updateBoard(BoardPatchDto boardPatchDto, Long boardId,String email) {
         Board board = findBoardId(boardId);
+        isPermission(board.getMember(),email);
         board.setTitle(boardPatchDto.getTitle());
         board.setContent(boardPatchDto.getContent());
+        board.setMember(memberService.displayNickname(boardPatchDto.getMember()));
+
 
         return boardRepository.save(board).getBoardId();
 
@@ -48,6 +64,7 @@ public class BoardService {
 
         Board board = findBoardId(boardId);
         board.setBoardCount(board.getBoardCount() + 1);
+//        board.setMember(displayNickname(boardPatchDto.getMember()));
         boardRepository.save(board); // 게시글의 조회수를 증가시킨 후 저장하는 용도
         return BoardResponseDto.FindFromBoard(board);
     }

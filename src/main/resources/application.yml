@@ -1,36 +1,37 @@
-#spring:
-#  h2:
-#    console:
-#      enabled: true
-#      path: /h2
-#
-#
-#  datasource:
-#    url: jdbc:h2:mem:test
-#
-#
-#  jpa:
-#    hibernate:
-#      ddl-auto: create # 서버가 실행될때마다 db의 테이블 초기화 및 생성
-#    properties:
-#      hibernate:
-#        format_sql: true
-#        default_batch_fetch_size: 100 # 페이징 처리에 필요
-#    open-in-view: false # OSIV 비활성화
 spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2
+
+
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/myserver?serverTimezone=UTC&characterEncoding=UTF-8
-    username: root
-    password: rhks1tjd
+    url: jdbc:h2:mem:test
+
 
   jpa:
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    open-in-view: false
-    show-sql: true
     hibernate:
-      format_sql: true
-      ddl-auto: create
+      ddl-auto: create # 서버가 실행될때마다 db의 테이블 초기화 및 생성
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 100 # 페이징 처리에 필요
+    open-in-view: false # OSIV 비활성화
+
+#spring:
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/myserver?serverTimezone=UTC&characterEncoding=UTF-8
+#    username: root
+#    password: rhks1tjd
+#
+#  jpa:
+#    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+#    open-in-view: false
+#    show-sql: true
+#    hibernate:
+#      format_sql: true
+#      ddl-auto: create
 #
 #
 #
@@ -48,10 +49,17 @@ spring:
 #config:
 #  domain: "*"
 
-#jwt:
-#  key: ${JWT_SECRET_KEY}               # 민감한 정보는 시스템 환경 변수에서 로드한다.
-#  access-token-expiration-minutes: 30
-#  refresh-token-expiration-minutes: 420
+jwt:
+  key: 1124asdfasg13adfgadfhasdf12dfgsdfghdfsadfgafasdfasdf #${JWT_SECRET_KEY}               # 민감한 정보는 시스템 환경 변수에서 로드한다.
+  access-token-expiration-minutes: 30
+  refresh-token-expiration-minutes: 420
+mail:
+  address:
+    admin: admin@gmail.com
+logging:
+  level:
+    root=DEBUG:
+
 #app:
 #  jwt:
 #    secret: asdassdassdassdassdassdassdassdassdasdfaf

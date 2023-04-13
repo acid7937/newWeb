@@ -9,6 +9,7 @@ import javax.validation.constraints.NotEmpty;
 public class ReplyPostDto {
     @NotEmpty
     private String reContent;
+    private String member;
 
 
 }

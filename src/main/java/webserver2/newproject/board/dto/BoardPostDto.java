@@ -11,4 +11,5 @@ public class BoardPostDto {
     private String title;
     @NotEmpty
     private String content;
+    private String member;
 }

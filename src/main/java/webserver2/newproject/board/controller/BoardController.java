@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import webserver2.newproject.board.dto.BoardPatchDto;
@@ -26,17 +27,17 @@ public class BoardController {
     private final BoardService boardService;
 
 
-    @PostMapping
-    public ResponseEntity postBoard(@RequestBody @Validated BoardPostDto boardPostDto, Authentication authentication) {
-        Member member = (Member) authentication.getPrincipal();
-        Long memberId = member.getMemberId();
+    @PostMapping("/post")
+    public ResponseEntity postBoard(@RequestBody @Validated BoardPostDto boardPostDto) {
+
         Long boardId = boardService.createBoard(boardPostDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(boardId);
     }
     @PatchMapping("/{boardId}")
     public ResponseEntity patchBoard(@PathVariable("boardId")Long boardId,
-                                     @RequestBody @Validated BoardPatchDto boardPatchDto) {
-        boardService.updateBoard(boardPatchDto, boardId);
+                                     @RequestBody @Validated BoardPatchDto boardPatchDto,
+                                     @AuthenticationPrincipal String email) {
+        boardService.updateBoard(boardPatchDto, boardId,email);
         return ResponseEntity.status(HttpStatus.OK).body(boardId);
     }
 

@@ -57,24 +57,19 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                                .antMatchers(HttpMethod.POST, "/*/members").permitAll()
-                                .mvcMatchers(HttpMethod.POST, "/*/members/**").hasRole("USER")
-                                .antMatchers(HttpMethod.PATCH, "/*/members/**").hasRole("USER")
-                                .antMatchers(HttpMethod.GET, "/*/members").hasRole("ADMIN")
-//                    .mvcMatchers(HttpMethod.GET, "/*/members").hasRole("ADMIN")
-                                .antMatchers(HttpMethod.GET, "/*/members/**").hasAnyRole("USER", "ADMIN")
-                                .antMatchers(HttpMethod.DELETE, "/*/members/**").hasRole("USER")
-                                .antMatchers(HttpMethod.POST, "/*/coffees").hasRole("ADMIN")
-                                .antMatchers(HttpMethod.PATCH, "/*/coffees/**").hasRole("ADMIN")
-                                .antMatchers(HttpMethod.GET, "/*/coffees/**").hasAnyRole("USER", "ADMIN")
-                                .antMatchers(HttpMethod.GET, "/*/coffees").permitAll()
-                                .antMatchers(HttpMethod.DELETE, "/*/coffees").hasRole("ADMIN")
-                                .antMatchers(HttpMethod.POST, "/*/orders").hasRole("USER")
-                                .antMatchers(HttpMethod.PATCH, "/*/orders").hasAnyRole("USER", "ADMIN")
-                                .antMatchers(HttpMethod.GET, "/*/orders/**").hasAnyRole("USER", "ADMIN")
-                                .antMatchers(HttpMethod.DELETE, "/*/orders").hasRole("USER")
-                                .mvcMatchers(HttpMethod.POST, "/*/qna-questions/*/qna-answers").hasRole("ADMIN")
-                                .anyRequest().permitAll()
+                        .antMatchers(HttpMethod.DELETE, "/**").hasRole("MEMBER")
+                        .antMatchers(HttpMethod.PATCH, "/**").hasRole("MEMBER")
+                        .antMatchers("/api/members/signup").permitAll()
+                        .antMatchers("/api/members/login").permitAll()
+//                        .antMatchers("/api/members/auth").permitAll()
+                        .antMatchers("/members/**").hasRole("MEMBER")
+                        .antMatchers("/api/boards/post").hasRole("MEMBER")
+                        .antMatchers(HttpMethod.GET, "/boards/**").permitAll()
+                        .antMatchers(HttpMethod.POST, "/api/replies/**").hasRole("MEMBER")
+                        .antMatchers(HttpMethod.GET, "/api/replies/**").permitAll()
+                        .anyRequest().permitAll()
+
+
                 );
         return http.build();
     }
@@ -101,7 +96,7 @@ public class SecurityConfiguration {
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
             JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer);
-            jwtAuthenticationFilter.setFilterProcessesUrl("/v11/auth/login");
+            jwtAuthenticationFilter.setFilterProcessesUrl("/members/login");
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler());
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
 

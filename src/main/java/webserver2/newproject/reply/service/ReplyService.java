@@ -8,6 +8,7 @@ import webserver2.newproject.board.entity.Board;
 import webserver2.newproject.board.service.BoardService;
 import webserver2.newproject.exception.BusinessLogicException;
 import webserver2.newproject.exception.ExceptionCode;
+import webserver2.newproject.member.service.MemberService;
 import webserver2.newproject.reply.dto.ReplyPatchDto;
 import webserver2.newproject.reply.dto.ReplyPostDto;
 import webserver2.newproject.reply.dto.ReplyResponseDto;
@@ -20,6 +21,7 @@ public class ReplyService {
 
     private final ReplyRepository replyRepository;
     private final BoardService boardService;
+    private final MemberService memberService;
 
     public Reply findReplyId(Long replyId) {
         return replyRepository.findById(replyId)
@@ -32,6 +34,7 @@ public class ReplyService {
         Reply reply = new Reply();
         reply.setReContent(replyPostDto.getReContent());
         reply.setBoard(board);
+        reply.setMember(memberService.displayNickname(replyPostDto.getMember()));
 
         return replyRepository.save(reply).getReplyId();
     }

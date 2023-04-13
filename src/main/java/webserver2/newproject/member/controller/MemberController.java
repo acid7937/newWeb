@@ -20,7 +20,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @PostMapping
+    @PostMapping("/signup")
     public ResponseEntity postMember(@RequestBody @Validated MemberPostDto memberPostDto) {
         Long memberId = memberService.createMember(memberPostDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(memberId);
