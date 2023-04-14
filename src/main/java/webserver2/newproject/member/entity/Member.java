@@ -9,6 +9,7 @@ import java.util.List;
 
 @Entity
 @Getter @Setter
+@NoArgsConstructor
 public class Member{
 
     @Id
@@ -17,6 +18,7 @@ public class Member{
     @Column(unique = true)
     private String email;
     private String password;
+    @Column(unique = true)
     private String nickname;
 
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)

@@ -67,6 +67,7 @@ public class SecurityConfiguration {
                         .antMatchers(HttpMethod.GET, "/boards/**").permitAll()
                         .antMatchers(HttpMethod.POST, "/api/replies/**").hasRole("MEMBER")
                         .antMatchers(HttpMethod.GET, "/api/replies/**").permitAll()
+                        .antMatchers(HttpMethod.POST, "/api/likes/**").hasRole("MEMBER")
                         .anyRequest().permitAll()
 
 
