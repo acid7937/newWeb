@@ -26,6 +26,16 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.CREATED).body(memberId);
     }
 
+//    @PostMapping("/signup")
+//    public ResponseEntity<?> postMember(@RequestBody @Validated MemberPostDto memberPostDto) {
+//        try {
+//            Long memberId = memberService.createMember(memberPostDto);
+//            return ResponseEntity.status(HttpStatus.CREATED).body(memberId);
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+//        }
+//    }
+
     @PatchMapping("/{memberId}")
     public ResponseEntity patchMember(@RequestBody MemberPatchDto memberPatchDto,
                                       @PathVariable("memberId") Long memberId) {

@@ -39,8 +39,9 @@ public class ReplyService {
         return replyRepository.save(reply).getReplyId();
     }
 
-    public Long updateReply(ReplyPatchDto replyPatchDto, Long replyId) {
+    public Long updateReply(ReplyPatchDto replyPatchDto, Long replyId,String email) {
         Reply reply = findReplyId(replyId);
+        boardService.isPermission(reply.getMember(),email);
         reply.setReContent(replyPatchDto.getReContent());
 
         return replyRepository.save(reply).getReplyId();
@@ -52,9 +53,9 @@ public class ReplyService {
         return replies.map(ReplyResponseDto::FindFromReply);
     }
 
-    public void deleteReply(Long replyId) {
+    public void deleteReply(Long replyId,String email) {
         Reply reply = findReplyId(replyId);
-
+        boardService.isPermission(reply.getMember(),email);
         replyRepository.deleteById(replyId);
     }
 }

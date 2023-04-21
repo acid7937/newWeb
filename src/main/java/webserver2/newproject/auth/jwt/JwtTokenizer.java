@@ -21,7 +21,7 @@ import java.util.Map;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class JwtTokenizer {
+public class JwtTokenizer {//jwt 생성, 검증 및 토큰 정보를 처리하는 클래스
     @Getter
     @Value("${jwt.key}")
     private String secretKey;
@@ -34,11 +34,11 @@ public class JwtTokenizer {
     @Value("${jwt.refresh-token-expiration-minutes}")
     private int refreshTokenExpirationMinutes;
 
-    public String encodeBase64SecretKey(String secretKey) {
+    public String encodeBase64SecretKey(String secretKey) { //비밀키를 Base64로 인코딩
         return Encoders.BASE64.encode(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String generateAccessToken(Map<String, Object> claims,
+    public String generateAccessToken(Map<String, Object> claims, //주어진 정보를 사용하여 액세스 토큰을 생성
                                       String subject,
                                       Date expiration,
                                       String base64EncodedSecretKey) {
@@ -53,6 +53,7 @@ public class JwtTokenizer {
                 .compact();
     }
 
+    //주어진 정보를 사용하여 리프레시 토큰을 생성
     public String generateRefreshToken(String subject, Date expiration, String base64EncodedSecretKey) {
         Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
 
@@ -75,7 +76,7 @@ public class JwtTokenizer {
         return claims;
     }
 
-    // 단순히 검증만 하는 용도로 쓰일 경우
+    // JWS를 사용하여 토큰의 서명을 검증
     public void verifySignature(String jws, String base64EncodedSecretKey) {
         Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
 
@@ -85,6 +86,7 @@ public class JwtTokenizer {
                 .parseClaimsJws(jws);
     }
 
+    //토큰의 만료 시간을 설정
     public Date getTokenExpiration(int expirationMinutes) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, expirationMinutes);
@@ -93,6 +95,7 @@ public class JwtTokenizer {
         return expiration;
     }
 
+    // Base64로 인코딩된 비밀키를 Key 객체로 변환
     private Key getKeyFromBase64EncodedKey(String base64EncodedSecretKey) {
         byte[] keyBytes = Decoders.BASE64.decode(base64EncodedSecretKey);
         Key key = Keys.hmacShaKeyFor(keyBytes);

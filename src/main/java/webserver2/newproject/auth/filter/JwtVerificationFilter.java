@@ -19,12 +19,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor //여기는 만든 토큰 검증하는 곳임
 public class JwtVerificationFilter extends OncePerRequestFilter {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
 
-    @Override
+    @Override //JWT 토큰을 검증하고 토큰에서 사용자 정보와 권한을 가져올때 쓸꺼임
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // System.out.println("# JwtVerificationFilter");
 
@@ -42,13 +42,14 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    @Override
+    @Override //인증 헤더가 없거나 Bearer로 시작하지 않는 경우 필터를 건너뛸꺼임 이따 토큰 보여드림
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String authorization = request.getHeader("Authorization");
 
         return authorization == null || !authorization.startsWith("Bearer");
     }
 
+    //HttpServletRequest에서 로그인 정보를 읽어오는데 JWT 토큰 추출 할려고 만든거임 그리고 검증까지 해주고
     private Map<String, Object> verifyJws(HttpServletRequest request) {
         String jws = request.getHeader("Authorization").replace("Bearer ", "");
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
@@ -57,6 +58,8 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         return claims;
     }
 
+
+    //위에서 claims로 반환했잖음 그걸로 인증정보를 생성할꺼임.
     private void setAuthenticationToContext(Map<String, Object> claims) {
         String username = (String) claims.get("username");
         List<GrantedAuthority> authorities = authorityUtils.createAuthorities((List)claims.get("roles"));

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Getter
+@Getter //전역 예외 처리 할려고 만들었다 여기말고 GlobalExceptionAdvice를 봐야한다.
 public class ErrorResponse {
     private int status;
     private String message;

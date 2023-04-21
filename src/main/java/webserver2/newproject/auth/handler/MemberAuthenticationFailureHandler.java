@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Slf4j
+@Slf4j //나는 로그인할때 이메일이랑 비번을 사용하게 만들었는데 잘못입력하면 사용될꺼다.
 public class MemberAuthenticationFailureHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request,

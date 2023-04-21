@@ -15,10 +15,12 @@ import webserver2.newproject.member.entity.Member;
 import webserver2.newproject.member.repository.MemberRepository;
 import webserver2.newproject.member.service.MemberService;
 
+import javax.transaction.Transactional;
+
 
 @Service
 @RequiredArgsConstructor
-
+@Transactional
 public class BoardService {
     private final BoardRepository boardRepository;
     private final MemberService memberService;
@@ -64,7 +66,6 @@ public class BoardService {
 
         Board board = findBoardId(boardId);
         board.setBoardCount(board.getBoardCount() + 1);
-//        board.setMember(displayNickname(boardPatchDto.getMember()));
         boardRepository.save(board); // 게시글의 조회수를 증가시킨 후 저장하는 용도
         return BoardResponseDto.FindFromBoard(board);
     }
@@ -74,8 +75,10 @@ public class BoardService {
         return boards.map(BoardResponseDto::FindFromBoard);
     }
 
-    public void deleteBoard(Long boardId) {
+    public void deleteBoard(Long boardId,String email) {
+        Board board = findBoardId(boardId);
         findBoardId(boardId);
+        isPermission(board.getMember(),email);
         boardRepository.deleteById(boardId);
     }
 }

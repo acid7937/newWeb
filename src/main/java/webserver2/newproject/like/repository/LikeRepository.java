@@ -15,5 +15,4 @@ public interface LikeRepository extends JpaRepository<Like,Long> {
     //삭제
     void deleteByMemberAndBoard(Member member, Board board);
 
-
 }

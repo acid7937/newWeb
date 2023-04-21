@@ -7,7 +7,7 @@ import org.springframework.http.MediaType;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class ErrorResponder {
+public class ErrorResponder { //에러 응답 생성기임 만들었던 Handler들이랑 쓰일꺼임
     public static void sendErrorResponse(HttpServletResponse response, HttpStatus status) throws IOException {
         Gson gson = new Gson();
         ErrorResponse errorResponse = ErrorResponse.of(status);

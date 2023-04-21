@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import webserver2.newproject.board.service.BoardService;
@@ -34,8 +35,9 @@ public class ReplyController {
 
     @PatchMapping("{replyId}")
     public ResponseEntity patchReply(@RequestBody ReplyPatchDto replyPatchDto,
-                                     @PathVariable("replyId") Long replyId) {
-        replyService.updateReply(replyPatchDto, replyId);
+                                     @PathVariable("replyId") Long replyId,
+                                     @AuthenticationPrincipal String email) {
+        replyService.updateReply(replyPatchDto, replyId,email);
         return ResponseEntity.status(HttpStatus.OK).body(replyId);
     }
 
@@ -50,9 +52,10 @@ public class ReplyController {
     }
 
     @DeleteMapping("{replyId}")
-    public ResponseEntity deleteReply(@PathVariable("replyId") Long replyId) {
+    public ResponseEntity deleteReply(@PathVariable("replyId") Long replyId,
+                                      @AuthenticationPrincipal String email) {
 
-        replyService.deleteReply(replyId);
+        replyService.deleteReply(replyId,email);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

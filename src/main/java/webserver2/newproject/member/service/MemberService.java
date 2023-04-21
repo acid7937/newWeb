@@ -1,7 +1,6 @@
 package webserver2.newproject.member.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import webserver2.newproject.auth.utils.CustomAuthorityUtils;
@@ -46,7 +45,6 @@ public class MemberService{
         Member member = new Member();
 
         member.setEmail(memberPostDto.getEmail());
-//        member.setPassword(memberPostDto.getPassword());
         member.setPassword(passwordEncoder.encode(memberPostDto.getPassword()));
         member.setRoles(customAuthorityUtils.createRoles(memberPostDto.getEmail()));
 
@@ -60,7 +58,7 @@ public class MemberService{
         Member member = findMemberId(memberId);
         member.setNickname(memberPatchDto.getNickname());
         member.setEmail(memberPatchDto.getEmail());
-        member.setPassword(memberPatchDto.getPassword());
+        member.setPassword(memberPatchDto.getPassword());//여길 passwordEncoder 안하니깐 그냥 저장되는게 보이는가?
 
 
         return memberRepository.save(member).getMemberId();

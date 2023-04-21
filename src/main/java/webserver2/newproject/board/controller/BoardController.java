@@ -58,8 +58,9 @@ public class BoardController {
         return ResponseEntity.status(HttpStatus.OK).body(boards);
     }
     @DeleteMapping("/{boardId}")
-    public ResponseEntity deleteBoard(@PathVariable("boardId") Long boardId) {
-        boardService.deleteBoard(boardId);
+    public ResponseEntity deleteBoard(@PathVariable("boardId") Long boardId,
+                                      @AuthenticationPrincipal String email) {
+        boardService.deleteBoard(boardId,email);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

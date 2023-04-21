@@ -17,3 +17,5 @@ public class MemberPostDto {
     private String nickname;
 
 }
+
+

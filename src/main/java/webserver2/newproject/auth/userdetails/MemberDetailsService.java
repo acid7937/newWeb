@@ -17,12 +17,12 @@ import java.util.Collection;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor //사용자 인증 정보를 로드하려고 만듬
 public class MemberDetailsService implements UserDetailsService {
     private final MemberRepository memberRepository;
     private final CustomAuthorityUtils authorityUtils;
 
-    @Override
+    @Override //이메일 사용해서 사용자 정보 가져옴
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
         Member findMember = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
@@ -30,6 +30,8 @@ public class MemberDetailsService implements UserDetailsService {
         return new MemberDetails(findMember);
     }
 
+
+    //UserDetails라고 엔티티랑 물려서 UserDetails 타입으로 저장해 주는거임 스프링 security는 UserDetails 폼으로 사용자를 저장함.
     private final class MemberDetails extends Member implements UserDetails {
         MemberDetails(Member member) {
             setMemberId(member.getMemberId());

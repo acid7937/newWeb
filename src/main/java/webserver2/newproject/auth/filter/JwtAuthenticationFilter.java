@@ -22,11 +22,13 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+    //로그인 요청 처리 할려고 만들었음
     private final AuthenticationManager authenticationManager;
     private final JwtTokenizer jwtTokenizer;
 
-    @SneakyThrows
-    @Override
+    @SneakyThrows //자동 예외 처리 도구임 알아서 만들고 처리함.
+    @Override //여기는 HttpServletRequest 에서 로그인 정보를 읽어오는 메서드다.
+    //UsernamePasswordAuthenticationToken 생성하고 인증 시도할꺼임.
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
         ObjectMapper objectMapper = new ObjectMapper();
         LoginDto loginDto = objectMapper.readValue(request.getInputStream(), LoginDto.class);
@@ -36,7 +38,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         return authenticationManager.authenticate(authenticationToken);
     }
 
-    @Override
+    @Override// JWT 액세스 토큰과 리프레시 토큰을 생성하고, HTTP 응답 헤더에 토큰을 추가할꺼임 포스트맨으로 보여드림
     protected void successfulAuthentication(HttpServletRequest request,
                                             HttpServletResponse response,
                                             FilterChain chain,
@@ -52,6 +54,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);  // 추가
     }
 
+
+    //아래는 엑세스 토큰 만들때 쓸꺼고
     private String delegateAccessToken(Member member) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("memberId", member.getMemberId());  // 식별자도 포함할 수 있다.
@@ -68,6 +72,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         return accessToken;
     }
 
+    // 아래는 리프레시 토큰 만들때 쓸꺼다.
     private String delegateRefreshToken(Member member) {
         String subject = member.getEmail();
         Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getRefreshTokenExpirationMinutes());
