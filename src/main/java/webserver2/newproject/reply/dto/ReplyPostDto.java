@@ -1,15 +1,15 @@
-package webserver2.newproject.board.dto;
+package webserver2.newproject.reply.dto;
+
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 
 @Getter @Setter
-public class BoardPostDto {
-
+public class ReplyPostDto {
     @NotEmpty
-    private String title;
-    @NotEmpty
-    private String content;
+    private String reContent;
     private String member;
+
+
 }

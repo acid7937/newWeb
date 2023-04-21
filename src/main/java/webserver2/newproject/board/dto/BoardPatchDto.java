@@ -11,4 +11,5 @@ public class BoardPatchDto {
     private String title;
     @NotEmpty
     private String content;
+    private String member;
 }
